@@ -1,11 +1,9 @@
 let leftMouseClick = false;
 
 document.addEventListener('mousedown', function(e) {
-    if (e.button === 0) {
-        leftMouseClick = true;
-    }
+    leftMouseClick = e.button === 0;
 })
-document.addEventListener('mouseup', function(e) {
+document.addEventListener('mouseup', function() {
     leftMouseClick = false;
 })
 
@@ -25,6 +23,12 @@ async function submit() {
     })
 
     let name = document.getElementById("category-name").value;
+
+    if (name === "") {
+        alert("Please enter a name for the category");
+        return;
+    }
+
     let url = window.location.href;
     await fetch(url, {
         method: 'POST',

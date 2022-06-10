@@ -56,31 +56,7 @@ func NewMainController() *MainController {
 	}
 	controller.Categories[0].Mangas = mangas
 
-	var categoriesRaw []models.CategoryDatabaseModel
-	categoriesJson, err := ioutil.ReadFile(filepath.Join(DataDirectory, "mangas.json"))
-	if err == nil {
-		err = json.Unmarshal(categoriesJson, &categoriesRaw)
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		panic(err)
-	}
-
-	var categories []models.CategoryMangaModel
-	for _, category := range categoriesRaw {
-		categoryData := models.CategoryMangaModel{}
-		for _, manga := range category.Mangas {
-			searchedManga := controller.FindMangaWithName(manga)
-			if searchedManga != nil {
-				categoryData.CategoryModel = &category.CategoryModel
-				categoryData.Mangas = append(categoryData.Mangas, searchedManga.MangaDataModel)
-			}
-		}
-		categories = append(categories, categoryData)
-	}
-
-	controller.Categories = append(controller.Categories, categories...)
+	controller.UpdateCategories()
 
 	return controller
 }
@@ -152,6 +128,38 @@ func (m *MainController) FindPageWithId(mangaId int, chapterId int, pageId int) 
 		}
 	}
 	return nil
+}
+
+// UpdateCategories updates the categories
+func (m *MainController) UpdateCategories() {
+	var categoriesRaw []models.CategoryDatabaseModel
+	categoriesJson, err := ioutil.ReadFile(filepath.Join(DataDirectory, "categories.json"))
+	if err == nil {
+		err = json.Unmarshal(categoriesJson, &categoriesRaw)
+		if err != nil {
+			err := ioutil.WriteFile(filepath.Join(DataDirectory, "categories.json"), []byte(""), 0644)
+			if err != nil {
+				panic(err)
+			}
+		}
+	} else {
+		return
+	}
+
+	var categories []models.CategoryMangaModel
+	for _, category := range categoriesRaw {
+		categoryData := models.CategoryMangaModel{}
+		for _, manga := range category.Mangas {
+			searchedManga := m.FindMangaWithName(manga)
+			if searchedManga != nil {
+				categoryData.CategoryModel = &category.CategoryModel
+				categoryData.Mangas = append(categoryData.Mangas, searchedManga.MangaDataModel)
+			}
+		}
+		categories = append(categories, categoryData)
+	}
+
+	m.Categories = append(m.Categories, categories...)
 }
 
 // Update updates the list of mangas from the disk

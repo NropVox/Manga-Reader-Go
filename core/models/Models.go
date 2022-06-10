@@ -79,5 +79,10 @@ type UpdateConfigModel struct {
 
 type CategoryDatabaseModel struct {
 	CategoryModel
+	CategoryApiModel
+}
+
+type CategoryApiModel struct {
+	Name   string
 	Mangas []string `json:"mangas"`
 }

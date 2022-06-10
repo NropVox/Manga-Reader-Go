@@ -34,6 +34,12 @@ func Router(r *gin.RouterGroup) {
 		update.GET("/new", LibraryUpdateController.UpdateNew)
 		update.GET("/manga/:mangaID", LibraryUpdateController.UpdateAll)
 	}
+
+	newCategory := r.Group("/new-category")
+	{
+		newCategory.GET("/", NewCategoryController.SendNewCategoryForm)
+		newCategory.POST("/", NewCategoryController.CreateCategory)
+	}
 }
 
 func idValidator(id string) gin.HandlerFunc {

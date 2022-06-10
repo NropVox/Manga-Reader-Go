@@ -11,6 +11,9 @@ func NewMangaServer(controller *core.MainController) *Server {
 	router := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
 
+	router.LoadHTMLGlob("templates/*.html")
+	router.Static("/static", "static")
+
 	mangaAPI.Router(router.Group("/api/v1"))
 
 	return &Server{
