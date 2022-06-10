@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 var NewCategoryController = newCategoryController{}
@@ -37,17 +36,15 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 	}
 
 	databaseCategory := &models.CategoryDatabaseModel{}
-	databaseCategory.CategoryModel.Name = category.Name
+	databaseCategory.CategoryModel.Name = category.ApiName
 	databaseCategory.Mangas = category.Mangas
 	databaseCategory.Id = len(core.Controller.Categories) + 1
 	databaseCategory.CategoryModel.Order = databaseCategory.Id
 	databaseCategory.Default = false
 
-	categoryJsonPath := filepath.Join(core.DataDirectory, "categories.json")
-
-	categoriesJson, err := ioutil.ReadFile(categoryJsonPath)
+	categoriesJson, err := ioutil.ReadFile(core.CategoryDBDirectory)
 	if err != nil {
-		create, err := os.Create(categoryJsonPath)
+		create, err := os.Create(core.CategoryDBDirectory)
 		if err != nil {
 			panic(err)
 		}
@@ -63,7 +60,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			panic(err)
 		}
 
-		err = ioutil.WriteFile(categoryJsonPath, categoryJson, 0644)
+		err = ioutil.WriteFile(core.CategoryDBDirectory, categoryJson, 0644)
 		if err != nil {
 			panic(err)
 		}
@@ -76,7 +73,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			}
 
 			file, err := json.Marshal(newCategoryDatabase)
-			err = ioutil.WriteFile(categoryJsonPath, file, 0644)
+			err = ioutil.WriteFile(core.CategoryDBDirectory, file, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -84,7 +81,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			categories = append(categories, *databaseCategory)
 
 			file, err := json.Marshal(categories)
-			err = ioutil.WriteFile(categoryJsonPath, file, 0644)
+			err = ioutil.WriteFile(core.CategoryDBDirectory, file, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -103,8 +100,8 @@ func (n *newCategoryController) EditCategories(c *gin.Context) {
 			mangas = append(mangas, manga.Title)
 		}
 		categories = append(categories, &models.CategoryApiModel{
-			Name:   category.Name,
-			Mangas: mangas,
+			ApiName: category.Name,
+			Mangas:  mangas,
 		})
 	}
 

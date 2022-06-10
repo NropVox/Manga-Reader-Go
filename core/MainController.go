@@ -14,9 +14,6 @@ import (
 
 var err error
 
-var DataDirectory = filepath.Join("d:", "NropVox-Manga")
-var LocalDirectory = filepath.Join(DataDirectory, "local")
-
 var Controller = NewMainController()
 
 func NewMainController() *MainController {
@@ -29,7 +26,7 @@ func NewMainController() *MainController {
 		panic(err)
 	}
 
-	detailsJson, err := ioutil.ReadFile(filepath.Join(DataDirectory, "mangas.json"))
+	detailsJson, err := ioutil.ReadFile(MangaDBDirectory)
 	if err == nil {
 		err = json.Unmarshal(detailsJson, &controller.AllMangas)
 		if err != nil {
@@ -132,12 +129,12 @@ func (m *MainController) FindPageWithId(mangaId int, chapterId int, pageId int) 
 
 // UpdateCategories updates the categories
 func (m *MainController) UpdateCategories() {
-	var categoriesRaw []models.CategoryDatabaseModel
-	categoriesJson, err := ioutil.ReadFile(filepath.Join(DataDirectory, "categories.json"))
+	var categoriesRaw []*models.CategoryDatabaseModel
+	categoriesJson, err := ioutil.ReadFile(CategoryDBDirectory)
 	if err == nil {
 		err = json.Unmarshal(categoriesJson, &categoriesRaw)
 		if err != nil {
-			err := ioutil.WriteFile(filepath.Join(DataDirectory, "categories.json"), []byte(""), 0644)
+			err := ioutil.WriteFile(CategoryDBDirectory, []byte(""), 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -148,11 +145,16 @@ func (m *MainController) UpdateCategories() {
 
 	var categories []models.CategoryMangaModel
 	for _, category := range categoriesRaw {
-		categoryData := models.CategoryMangaModel{}
+		categoryData := models.CategoryMangaModel{
+			CategoryModel: &models.CategoryModel{},
+		}
 		for _, manga := range category.Mangas {
 			searchedManga := m.FindMangaWithName(manga)
 			if searchedManga != nil {
-				categoryData.CategoryModel = &category.CategoryModel
+				categoryData.Name = category.Name
+				categoryData.Id = category.Id
+				categoryData.Order = category.Order
+				categoryData.Default = category.Default
 				categoryData.Mangas = append(categoryData.Mangas, searchedManga.MangaDataModel)
 			}
 		}
@@ -303,7 +305,7 @@ func (m *MainController) Update(conf models.UpdateConfigModel) {
 		panic(err)
 	}
 
-	err = ioutil.WriteFile(filepath.Join(DataDirectory, "mangas.json"), mangaListJson, 0644)
+	err = ioutil.WriteFile(MangaDBDirectory, mangaListJson, 0644)
 	if err != nil {
 		panic(err)
 	}

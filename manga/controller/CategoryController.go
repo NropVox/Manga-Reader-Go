@@ -18,6 +18,7 @@ func (c *categoryController) SendCategoriesList(g *gin.Context) {
 	for _, categoryManga := range core.Controller.Categories {
 		categories = append(categories, &models.CategoryModel{
 			Id:      categoryManga.Id,
+			Order:   categoryManga.Order,
 			Name:    categoryManga.Name,
 			Default: categoryManga.Default,
 		})

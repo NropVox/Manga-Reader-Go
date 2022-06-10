@@ -83,6 +83,6 @@ type CategoryDatabaseModel struct {
 }
 
 type CategoryApiModel struct {
-	Name   string
-	Mangas []string `json:"mangas"`
+	ApiName string   `json:"apiName"`
+	Mangas  []string `json:"mangas"`
 }
