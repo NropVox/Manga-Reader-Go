@@ -1,13 +1,15 @@
 package core
 
-import "path/filepath"
+import (
+	"Manga-Reader/cli"
+)
 
-var DataDirectory = filepath.Join("d:", "NropVox-Manga")
+var DataDirectory = cli.Configuration.DataDirectory
 
-var LocalDirectory = filepath.Join(DataDirectory, "local")
-var CategoryDBDirectory = filepath.Join(DataDirectory, "categories.json")
-var MangaDBDirectory = filepath.Join(DataDirectory, "mangas.json")
-var TemplatesDirectory = filepath.Join(DataDirectory, "web", "templates")
-var StaticDirectory = filepath.Join(DataDirectory, "web", "static")
+var LocalDirectory = cli.Configuration.LocalDirectory
+var CategoryDBDirectory = cli.Configuration.CategoryDBDirectory
+var MangaDBDirectory = cli.Configuration.MangaDBDirectory
+var TemplatesDirectory = cli.Configuration.TemplatesDirectory
+var StaticDirectory = cli.Configuration.StaticDirectory
 
 //var ThumbnailsDirectory = filepath.Join(DataDirectory, "thumbnails")
