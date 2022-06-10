@@ -4,7 +4,6 @@ import (
 	"Manga-Reader/core"
 	"Manga-Reader/core/models"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -64,8 +63,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			panic(err)
 		}
 
-		fmt.Println(categoryJson)
-		err = ioutil.WriteFile(categoryJsonPath, categoriesJson, 0644)
+		err = ioutil.WriteFile(categoryJsonPath, categoryJson, 0644)
 		if err != nil {
 			panic(err)
 		}
