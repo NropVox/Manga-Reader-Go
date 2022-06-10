@@ -76,3 +76,8 @@ type DetailsJson struct {
 type UpdateConfigModel struct {
 	New bool
 }
+
+type CategoryDatabaseModel struct {
+	CategoryModel
+	Mangas []string `json:"mangas"`
+}

@@ -56,6 +56,32 @@ func NewMainController() *MainController {
 	}
 	controller.Categories[0].Mangas = mangas
 
+	var categoriesRaw []models.CategoryDatabaseModel
+	categoriesJson, err := ioutil.ReadFile(filepath.Join(DataDirectory, "mangas.json"))
+	if err == nil {
+		err = json.Unmarshal(categoriesJson, &categoriesRaw)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		panic(err)
+	}
+
+	var categories []models.CategoryMangaModel
+	for _, category := range categoriesRaw {
+		categoryData := models.CategoryMangaModel{}
+		for _, manga := range category.Mangas {
+			searchedManga := controller.FindMangaWithName(manga)
+			if searchedManga != nil {
+				categoryData.CategoryModel = &category.CategoryModel
+				categoryData.Mangas = append(categoryData.Mangas, searchedManga.MangaDataModel)
+			}
+		}
+		categories = append(categories, categoryData)
+	}
+
+	controller.Categories = append(controller.Categories, categories...)
+
 	return controller
 }
 
@@ -79,6 +105,16 @@ func (m *MainController) FindCategoryWithId(id int) *models.CategoryMangaModel {
 func (m *MainController) FindMangaWithId(id int) *models.MangaModel {
 	for _, manga := range m.AllMangas {
 		if manga.Id == id {
+			return &manga
+		}
+	}
+	return nil
+}
+
+// FindMangaWithName returns the manga with the given name
+func (m *MainController) FindMangaWithName(name string) *models.MangaModel {
+	for _, manga := range m.AllMangas {
+		if manga.Title == name {
 			return &manga
 		}
 	}

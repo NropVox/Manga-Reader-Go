@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        #manga-list {
+            display: flex;
+            margin: 10px;
+            padding: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            user-select: none;
+        }
+    </style>
+    <script src="/static/newCategory.js" defer></script>
+    <title>Create New Category</title>
+</head>
+<body>
+    <h1>Create New Category</h1>
+    <label for="category-name">Name: </label><input type="text" name="name" id="category-name">
+    <input type="button" value="Submit" id="submit" onclick="submit()">
+    <div id="manga-list">
+        {{ range $manga := .mangaList }}
+        <label for="{{$manga}}" onmouseover="check('{{$manga}}')">
+            <input type="checkbox" class="list" id="{{$manga}}" onmouseover="check('{{$manga}}')">
+            {{ $manga }}
+        </label>
+        {{ end }}
+    </div>
+</body>
+</html>
