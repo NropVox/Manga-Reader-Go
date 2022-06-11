@@ -34,7 +34,7 @@ func loadConfigFile() {
 	configFileDirectory := filepath.Join(DataDirectory, "config.json")
 	configFile, err := ioutil.ReadFile(configFileDirectory)
 	if err != nil {
-		configFile, err = json.Marshal(defaultConfigFile)
+		configFile, err = json.MarshalIndent(defaultConfigFile, "", "    ")
 		if err != nil {
 			panic(err)
 		}
