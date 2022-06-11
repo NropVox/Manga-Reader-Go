@@ -16,10 +16,7 @@ var MangaController = mangaController{}
 
 type mangaController struct{}
 
-//func (m *mangaController) SendMangasList(c *gin.Context) {
-//
-//}
-
+// SendMangaDetails sends the chapter details
 func (m *mangaController) SendMangaDetails(c *gin.Context) {
 	manga := c.MustGet("manga").(*models.MangaModel)
 	c.JSON(http.StatusOK, manga.MangaDataModel)
@@ -37,6 +34,7 @@ func (m *mangaController) SendCoverPhoto(c *gin.Context) {
 	c.Data(http.StatusOK, "image/jpeg", cover)
 }
 
+// SendChaptersList sends the list of chapters
 func (m *mangaController) SendChaptersList(c *gin.Context) {
 	manga := c.MustGet("manga").(*models.MangaModel)
 
@@ -49,11 +47,13 @@ func (m *mangaController) SendChaptersList(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.Reverse(chapterApiData))
 }
 
+// SendChapterDetails sends the details of a chapter
 func (m *mangaController) SendChapterDetails(c *gin.Context) {
 	chapter := c.MustGet("chapter").(*models.ChapterModel)
 	c.JSON(http.StatusOK, chapter.ChapterDataModel)
 }
 
+// SendPage sends the requested page of a chapter
 func (m *mangaController) SendPage(c *gin.Context) {
 	chapter := c.MustGet("chapter").(*models.ChapterModel)
 	page := c.MustGet("page").(*models.PageModel)
