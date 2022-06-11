@@ -31,9 +31,17 @@ func loadArgsFromCli() {
 }
 
 func loadConfigFile() {
-	configFile, err := ioutil.ReadFile(filepath.Join(DataDirectory, "config.json"))
+	configFileDirectory := filepath.Join(DataDirectory, "config.json")
+	configFile, err := ioutil.ReadFile(configFileDirectory)
 	if err != nil {
-		panic(err)
+		configFile, err = json.Marshal(defaultConfigFile)
+		if err != nil {
+			panic(err)
+		}
+		err = ioutil.WriteFile(configFileDirectory, configFile, 0644)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	config := &models.ConfigurationModel{}
