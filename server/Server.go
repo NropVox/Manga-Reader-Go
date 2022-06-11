@@ -10,7 +10,7 @@ import (
 
 // NewMangaServer Creates new manga server
 func NewMangaServer(controller *core.MainController) *Server {
-	router := gin.New()
+	router := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
 
 	router.LoadHTMLGlob(filepath.Join(core.TemplatesDirectory, "*.html"))
@@ -23,6 +23,8 @@ func NewMangaServer(controller *core.MainController) *Server {
 		newCategory.GET("/", NewCategoryController.SendNewCategoryForm)
 		newCategory.POST("/", NewCategoryController.CreateCategory)
 	}
+
+	println("Server Started...")
 
 	return &Server{
 		Router:     router,

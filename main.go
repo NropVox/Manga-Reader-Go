@@ -8,6 +8,8 @@ import (
 
 func main() {
 	cli.ParseCommandLineArguments()
+	core.NewMainController()
+
 	err := server.NewMangaServer(core.Controller).Router.Run(cli.Configuration.Host)
 	if err != nil {
 		panic(err)

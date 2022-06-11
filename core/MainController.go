@@ -14,9 +14,11 @@ import (
 
 var err error
 
-var Controller = NewMainController()
+var Controller = &MainController{}
 
 func NewMainController() *MainController {
+	loadConfigsFromCli()
+
 	controller := &MainController{}
 
 	if err = os.MkdirAll(LocalDirectory, 0755); err != nil {
@@ -54,6 +56,8 @@ func NewMainController() *MainController {
 	controller.Categories[0].Mangas = mangas
 
 	controller.UpdateCategories()
+
+	Controller = controller
 
 	return controller
 }
