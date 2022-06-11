@@ -3,6 +3,7 @@ package controller
 import (
 	"Manga-Reader/core"
 	"Manga-Reader/core/models"
+	. "Manga-Reader/global"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
@@ -42,9 +43,9 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 	databaseCategory.CategoryModel.Order = databaseCategory.Id
 	databaseCategory.Default = false
 
-	categoriesJson, err := ioutil.ReadFile(core.CategoryDBDirectory)
+	categoriesJson, err := ioutil.ReadFile(CategoryDBDirectory)
 	if err != nil {
-		create, err := os.Create(core.CategoryDBDirectory)
+		create, err := os.Create(CategoryDBDirectory)
 		if err != nil {
 			panic(err)
 		}
@@ -60,7 +61,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			panic(err)
 		}
 
-		err = ioutil.WriteFile(core.CategoryDBDirectory, categoryJson, 0644)
+		err = ioutil.WriteFile(CategoryDBDirectory, categoryJson, 0644)
 		if err != nil {
 			panic(err)
 		}
@@ -73,7 +74,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			}
 
 			file, err := json.Marshal(newCategoryDatabase)
-			err = ioutil.WriteFile(core.CategoryDBDirectory, file, 0644)
+			err = ioutil.WriteFile(CategoryDBDirectory, file, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -81,7 +82,7 @@ func (n *newCategoryController) CreateCategory(c *gin.Context) {
 			categories = append(categories, *databaseCategory)
 
 			file, err := json.Marshal(categories)
-			err = ioutil.WriteFile(core.CategoryDBDirectory, file, 0644)
+			err = ioutil.WriteFile(CategoryDBDirectory, file, 0644)
 			if err != nil {
 				panic(err)
 			}

@@ -2,6 +2,7 @@ package core
 
 import (
 	"Manga-Reader/core/models"
+	. "Manga-Reader/global"
 	"Manga-Reader/utils"
 	"archive/zip"
 	"encoding/json"
@@ -17,8 +18,6 @@ var err error
 var Controller = &MainController{}
 
 func NewMainController() *MainController {
-	loadConfigsFromCli()
-
 	controller := &MainController{}
 
 	if err = os.MkdirAll(LocalDirectory, 0755); err != nil {

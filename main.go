@@ -1,16 +1,19 @@
 package main
 
 import (
-	"Manga-Reader/cli"
 	"Manga-Reader/core"
+	. "Manga-Reader/global"
 	"Manga-Reader/server"
+	"fmt"
 )
 
 func main() {
-	cli.ParseCommandLineArguments()
+	ParseCommandLineArguments()
 	core.NewMainController()
 
-	err := server.NewMangaServer(core.Controller).Router.Run(cli.Configuration.Host)
+	host := fmt.Sprintf("%s:%d", Address, Port)
+
+	err := server.NewMangaServer(core.Controller).Router.Run(host)
 	if err != nil {
 		panic(err)
 	}

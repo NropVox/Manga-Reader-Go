@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"Manga-Reader/core"
 	"Manga-Reader/core/models"
+	. "Manga-Reader/global"
 	"Manga-Reader/utils"
 	"archive/zip"
 	"github.com/gin-gonic/gin"
@@ -59,7 +59,7 @@ func (m *mangaController) SendPage(c *gin.Context) {
 	var contentType string
 	var ext string
 
-	chapterPath := filepath.Join(core.LocalDirectory, chapter.Url)
+	chapterPath := filepath.Join(LocalDirectory, chapter.Url)
 
 	if page.Name == "Archived" {
 		chapterExt := filepath.Ext(chapter.Url)

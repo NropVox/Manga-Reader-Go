@@ -1,4 +1,4 @@
-package cli
+package global
 
 import (
 	"Manga-Reader/core/models"
@@ -6,14 +6,13 @@ import (
 	"path/filepath"
 )
 
-var Configuration models.ConfigurationModel
+var CLIArgs models.CommandLineArgsModel
 
 func ParseCommandLineArguments() {
-	host := flag.String("host", ":1234", "Port to run the server on")
 	dataDirectory := flag.String("dir", filepath.Join("d:", "NropVox-Manga"), "Data directory")
 
 	flag.Parse()
 
-	Configuration.Host = *host
-	Configuration.DataDirectory = *dataDirectory
+	CLIArgs.DataDirectory = *dataDirectory
+	loadArgsFromCli()
 }

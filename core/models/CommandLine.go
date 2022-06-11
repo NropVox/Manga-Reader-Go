@@ -1,7 +1,7 @@
 package models
 
-type ConfigurationModel struct {
-	Host string
+type CommandLineArgsModel struct {
+	//Host string
 
 	DataDirectory string `json:"data_directory"`
 }
