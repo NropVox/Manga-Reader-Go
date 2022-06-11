@@ -40,12 +40,17 @@ func (m *mangaController) SendCoverPhoto(c *gin.Context) {
 func (m *mangaController) SendChaptersList(c *gin.Context) {
 	manga := c.MustGet("manga").(*models.MangaModel)
 
-	c.JSON(http.StatusOK, utils.Reverse(manga.Chapters))
+	var chapterApiData []*models.ChapterDataModel
+
+	for _, chapter := range manga.Chapters {
+		chapterApiData = append(chapterApiData, chapter.ChapterDataModel)
+	}
+
+	c.JSON(http.StatusOK, utils.Reverse(chapterApiData))
 }
 
 func (m *mangaController) SendChapterDetails(c *gin.Context) {
 	chapter := c.MustGet("chapter").(*models.ChapterModel)
-
 	c.JSON(http.StatusOK, chapter.ChapterDataModel)
 }
 
